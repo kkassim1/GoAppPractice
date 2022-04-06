@@ -104,14 +104,14 @@ func main() {
 	Students = append(Students, Student{ID: "1", Class: "32122", StudentName: "movie 1", Teacher: &Teacher{Firstname: "john", Lastname: "doe"}})
 
 	Students = append(Students, Student{ID: "2", Class: "32122", StudentName: "movie 2", Teacher: &Teacher{Firstname: "kkn", Lastname: "yup"}})
-	r.HandleFunc("/movies", getStudents).Methods("GET")
-	r.HandleFunc("/movies/{id}", getStudent).Methods("GET")
+	r.HandleFunc("/students", getStudents).Methods("GET")
+	r.HandleFunc("/students/{id}", getStudent).Methods("GET")
 
-	r.HandleFunc("/movies", createStudent).Methods("POST")
+	r.HandleFunc("/students", createStudent).Methods("POST")
 
-	r.HandleFunc("/movies/{id}", updateStudent).Methods("PUT")
+	r.HandleFunc("/students/{id}", updateStudent).Methods("PUT")
 
-	r.HandleFunc("/movies/{id}", deleteStudent).Methods("DELETE")
+	r.HandleFunc("/students/{id}", deleteStudent).Methods("DELETE")
 
 	fmt.Print("starting server at port 8000\n")
 	log.Fatal(http.ListenAndServe(":8000", r))
