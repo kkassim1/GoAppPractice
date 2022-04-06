@@ -25,12 +25,14 @@ type Teacher struct {
 
 var Students []Student
 
-func getStudents(w http.ResponseWriter, r *http.Request) {
+// This function gets all students
 
+func getStudents(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(Students)
-
 }
+
+// This function deletes students
 
 func deleteStudent(w http.ResponseWriter, r *http.Request) {
 
@@ -48,27 +50,21 @@ func deleteStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func getStudent(w http.ResponseWriter, r *http.Request) {
-
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-
 	for _, item := range Students {
 		if item.ID == params["id"] {
-
 			json.NewEncoder(w).Encode(item)
 			return
-
 		}
-
 	}
-
 }
 
+// This function creates a students
 func createStudent(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	var student Student
-
 	_ = json.NewDecoder(r.Body).Decode(&student)
 	student.ID = strconv.Itoa(rand.Intn(100000000))
 	Students = append(Students, student)
@@ -76,44 +72,40 @@ func createStudent(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// This function updates a students
 func updateStudent(w http.ResponseWriter, r *http.Request) {
-
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-
 	for index, item := range Students {
-
 		if item.ID == params["id"] {
 			Students = append(Students[:index], Students[index+1:]...)
 			var student Student
-
 			_ = json.NewDecoder(r.Body).Decode(&student)
 			student.ID = params["id"]
 			Students = append(Students, student)
 			json.NewEncoder(w).Encode(student)
 		}
-
 	}
-
 }
 
 func main() {
 
 	r := mux.NewRouter()
 
+	// Instatiate students
 	Students = append(Students, Student{ID: "1", Class: "32122", StudentName: "stu 1", Teacher: &Teacher{Firstname: "john", Lastname: "doe"}})
 
 	Students = append(Students, Student{ID: "2", Class: "32122", StudentName: "stu 2", Teacher: &Teacher{Firstname: "kkn", Lastname: "yup"}})
+
+	// Crud request!
+
 	r.HandleFunc("/students", getStudents).Methods("GET")
 	r.HandleFunc("/students/{id}", getStudent).Methods("GET")
-
 	r.HandleFunc("/students", createStudent).Methods("POST")
-
 	r.HandleFunc("/students/{id}", updateStudent).Methods("PUT")
-
 	r.HandleFunc("/students/{id}", deleteStudent).Methods("DELETE")
-
 	fmt.Print("starting server at port 8000\n")
+
 	log.Fatal(http.ListenAndServe(":8000", r))
 
 }
