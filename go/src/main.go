@@ -13,9 +13,9 @@ import (
 
 type Student struct {
 	ID          string   `json:"id"`
-	Class       string   `json:"isbn"`
-	StudentName string   `json:"title"`
-	Teacher     *Teacher `json:"director"`
+	Class       string   `json:"class"`
+	StudentName string   `json:"studentname"`
+	Teacher     *Teacher `json:"teacher"`
 }
 
 type Teacher struct {
@@ -101,9 +101,9 @@ func main() {
 
 	r := mux.NewRouter()
 
-	Students = append(Students, Student{ID: "1", Class: "32122", StudentName: "movie 1", Teacher: &Teacher{Firstname: "john", Lastname: "doe"}})
+	Students = append(Students, Student{ID: "1", Class: "32122", StudentName: "stu 1", Teacher: &Teacher{Firstname: "john", Lastname: "doe"}})
 
-	Students = append(Students, Student{ID: "2", Class: "32122", StudentName: "movie 2", Teacher: &Teacher{Firstname: "kkn", Lastname: "yup"}})
+	Students = append(Students, Student{ID: "2", Class: "32122", StudentName: "stu 2", Teacher: &Teacher{Firstname: "kkn", Lastname: "yup"}})
 	r.HandleFunc("/students", getStudents).Methods("GET")
 	r.HandleFunc("/students/{id}", getStudent).Methods("GET")
 
